@@ -46,7 +46,7 @@
             margin-bottom: 40px;
         }
 
-        /* Styles specifically for Screenshots */
+        /* --- Styles สำหรับรูปภาพและการขยาย (Lightbox) --- */
         .screenshot {
             display: block;
             max-width: 100%;
@@ -55,14 +55,85 @@
             border: 1px solid #ccc;
             border-radius: 6px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นรูปมือเมื่อชี้ที่ภาพ */
+            transition: 0.3s;
         }
+
+        .screenshot:hover {opacity: 0.9;}
+
+        /* ฉากหลัง Modal (ซ่อนอยู่เริ้มต้น) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            padding-top: 50px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* รูปภาพที่ขยายใหญ่ใน Modal */
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        /* Animation เล็กน้อยตอนเปิด */
+        .modal-content, #caption {  
+          -webkit-animation-name: zoom;
+          -webkit-animation-duration: 0.3s;
+          animation-name: zoom;
+          animation-duration: 0.3s;
+        }
+
+        @-webkit-keyframes zoom {
+          from {-webkit-transform:scale(0.5)} 
+          to {-webkit-transform:scale(1)}
+        }
+
+        @keyframes zoom {
+          from {transform:scale(0.5)} 
+          to {transform:scale(1)}
+        }
+
+        /* ปุ่มปิด (x) */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            z-index: 10000;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* -------------------------------------------------- */
+
 
         .step-card {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 40px; /* Increased margin for images */
+            margin-bottom: 40px;
         }
 
         .step-header {
@@ -155,6 +226,18 @@
             font-size: 0.85em;
             color: #777;
         }
+        
+        /* ปรับการแสดงผลปุ่มปิดบนมือถือ */
+        @media only screen and (max-width: 700px){
+            .modal-content {
+                width: 100%;
+            }
+            .close {
+                top: 10px;
+                right: 20px;
+                font-size: 30px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -166,6 +249,8 @@
             ระบบนี้ใช้สำหรับตรวจสอบสถานะการชำระเงินฌาปนกิจ โดยการอัปโหลดไฟล์ข้อมูล (.xlsx หรือ .csv) 
             ระบบจะทำการประมวลผลและแสดงสถานะ แยกตามประเภทสมาชิก (สสอ.รท และ สส.ชสอ)
         </p>
+        
+        <p style="text-align: center; color: #777; font-size: 0.9em;">(คลิกที่รูปภาพเพื่อดูภาพขนาดใหญ่)</p>
 
         <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
 
@@ -268,6 +353,43 @@
             &copy; 2025 คู่มือการใช้งานระบบตรวจสอบยอดชำระฌาปนกิจ
         </footer>
     </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <script>
+        // ดึงองค์ประกอบ Modal และรูปภาพที่จะแสดงใน Modal มาเก็บไว้
+        var modal = document.getElementById("imageModal");
+        var modalImg = document.getElementById("expandedImg");
+
+        // ดึงรูปภาพทั้งหมดที่มี class="screenshot"
+        var images = document.querySelectorAll('.screenshot');
+
+        // วนลูปเพื่อเพิ่มเหตุการณ์ onclick ให้กับรูปภาพทุกรูป
+        images.forEach(img => {
+            img.onclick = function(){
+                modal.style.display = "flex"; // แสดง Modal
+                modalImg.src = this.src; // เอารูปที่คลิกไปใส่ใน Modal
+            }
+        });
+
+        // ดึงปุ่มปิด (x)
+        var span = document.getElementsByClassName("close")[0];
+
+        // เมื่อคลิกปุ่มปิด ให้ซ่อน Modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // เมื่อคลิกที่พื้นหลังสีดำนอกรูปภาพ ให้ซ่อน Modal เช่นกัน
+        modal.onclick = function(event) {
+            if (event.target === modal) {
+                 modal.style.display = "none";
+            }
+        }
+    </script>
 
 </body>
 </html>
