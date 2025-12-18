@@ -7,13 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4DB6AC;
+            --primary-color: #4DB6AC; /* Teal from upload button */
             --primary-dark: #00897B;
             --secondary-color: #E0F2F1;
             --text-color: #333;
             --border-color: #ddd;
             --success-color: #2ECC71;
-            --pending-color: #95A5A6;
+            --warning-color: #FFC107; /* For Reset button */
             --danger-color: #E74C3C;
         }
 
@@ -35,15 +35,18 @@
             border-radius: 12px;
         }
 
-        h1, h2, h3 {
-            color: var(--primary-dark);
-        }
-
         h1 {
             text-align: center;
+            color: var(--primary-dark);
             border-bottom: 2px solid var(--primary-color);
             padding-bottom: 20px;
             margin-bottom: 40px;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            margin: 0;
+            font-size: 1.25rem;
         }
 
         /* --- Styles สำหรับรูปภาพและการขยาย (Lightbox) --- */
@@ -51,151 +54,119 @@
             display: block;
             max-width: 100%;
             height: auto;
-            margin: 20px auto;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นรูปมือเมื่อชี้ที่ภาพ */
-            transition: 0.3s;
+            margin: 25px auto;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            cursor: zoom-in;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .screenshot:hover {opacity: 0.9;}
+        .screenshot:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
 
-        /* ฉากหลัง Modal (ซ่อนอยู่เริ้มต้น) */
+        /* Modal ฉากหลัง */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 9999; /* Sit on top */
-            padding-top: 50px; /* Location of the box */
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            padding-top: 50px;
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
             align-items: center;
             justify-content: center;
         }
 
-        /* รูปภาพที่ขยายใหญ่ใน Modal */
+        /* รูปใน Modal */
         .modal-content {
             margin: auto;
             display: block;
-            width: 90%;
-            max-width: 1200px;
+            width: auto;
+            max-width: 90%;
             max-height: 90vh;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-        
-        /* Animation เล็กน้อยตอนเปิด */
-        .modal-content, #caption {  
-          -webkit-animation-name: zoom;
-          -webkit-animation-duration: 0.3s;
-          animation-name: zoom;
-          animation-duration: 0.3s;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
         }
 
-        @-webkit-keyframes zoom {
-          from {-webkit-transform:scale(0.5)} 
-          to {-webkit-transform:scale(1)}
-        }
-
-        @keyframes zoom {
-          from {transform:scale(0.5)} 
-          to {transform:scale(1)}
-        }
-
-        /* ปุ่มปิด (x) */
+        /* ปุ่มปิด */
         .close {
             position: absolute;
-            top: 15px;
+            top: 20px;
             right: 35px;
             color: #f1f1f1;
             font-size: 40px;
             font-weight: bold;
             transition: 0.3s;
-            z-index: 10000;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: var(--primary-color);
-            text-decoration: none;
             cursor: pointer;
         }
-        /* -------------------------------------------------- */
 
+        .close:hover { color: var(--primary-color); }
 
+        /* --- Step Layout --- */
         .step-card {
             background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 40px;
         }
 
         .step-header {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .step-number {
             background-color: var(--primary-color);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            font-size: 1.1em;
             margin-right: 15px;
+            flex-shrink: 0;
         }
 
-        .step-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin: 0;
-        }
-
+        /* --- UI Elements Styling --- */
         .ui-element {
-            background-color: #f0f4f8;
-            border: 1px solid #d1d9e6;
+            background-color: #f1f8e9;
+            border: 1px solid #c5e1a5;
+            color: #2e7d32;
             padding: 2px 8px;
             border-radius: 4px;
             font-family: monospace;
-            color: #2c3e50;
             font-weight: bold;
+            font-size: 0.95em;
+        }
+        
+        .ui-btn-blue {
+            background-color: #e0f7fa;
+            border: 1px solid #4dd0e1;
+            color: #00838f;
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            color: white;
-            font-weight: 500;
-        }
-
-        .status-paid {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-            border: 1px solid #a5d6a7;
-        }
-
-        .status-pending {
-            background-color: #eceff1;
-            color: #607d8b;
-            border: 1px solid #cfd8dc;
+        .ui-btn-yellow {
+            background-color: #fff8e1;
+            border: 1px solid #ffe082;
+            color: #ff6f00;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 20px;
+            font-size: 0.95em;
         }
 
         th, td {
@@ -205,19 +176,17 @@
         }
 
         th {
-            background-color: var(--secondary-color);
+            background-color: #f8f9fa;
             color: var(--primary-dark);
+            font-weight: 600;
         }
-
-        .icon-check { color: var(--success-color); font-weight: bold; }
-        .icon-cross { color: var(--danger-color); font-weight: bold; }
 
         .note {
             background-color: #fff3cd;
             border-left: 5px solid #ffc107;
             padding: 15px;
-            margin-top: 10px;
-            font-size: 0.95em;
+            margin-top: 20px;
+            border-radius: 4px;
         }
 
         footer {
@@ -225,18 +194,13 @@
             margin-top: 50px;
             font-size: 0.85em;
             color: #777;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
-        
-        /* ปรับการแสดงผลปุ่มปิดบนมือถือ */
-        @media only screen and (max-width: 700px){
-            .modal-content {
-                width: 100%;
-            }
-            .close {
-                top: 10px;
-                right: 20px;
-                font-size: 30px;
-            }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; width: 95%; margin: 20px auto; }
+            .close { top: 10px; right: 20px; font-size: 30px; }
         }
     </style>
 </head>
@@ -249,35 +213,34 @@
             ระบบนี้ใช้สำหรับตรวจสอบสถานะการชำระเงินฌาปนกิจ โดยการอัปโหลดไฟล์ข้อมูล (.xlsx หรือ .csv) 
             ระบบจะทำการประมวลผลและแสดงสถานะ แยกตามประเภทสมาชิก (สสอ.รท และ สส.ชสอ)
         </p>
-        
-        <p style="text-align: center; color: #777; font-size: 0.9em;">(คลิกที่รูปภาพเพื่อดูภาพขนาดใหญ่)</p>
+        <p style="text-align: center; color: #999; font-size: 0.9em;">(คลิกที่รูปภาพเพื่อขยายดูภาพขนาดใหญ่)</p>
 
         <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
 
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">1</div>
-                <h3 class="step-title">การนำเข้าข้อมูล (Upload)</h3>
+                <h3>การนำเข้าข้อมูล (Upload)</h3>
             </div>
             <p>เริ่มต้นการใช้งานโดยการนำไฟล์ข้อมูลเข้าสู่ระบบ:</p>
             <ol>
-                <li>กดที่ปุ่ม <span class="ui-element">Choose File</span> (หรือ เลือกไฟล์)</li>
-                <li>เลือกไฟล์ข้อมูลจากเครื่องคอมพิวเตอร์ของคุณ (รองรับไฟล์นามสกุล <code>.xlsx</code> หรือ <code>.csv</code>)</li>
+                <li>กดที่ปุ่ม <span class="ui-element">Choose File</span></li>
+                <li>เลือกไฟล์ข้อมูลจากเครื่องคอมพิวเตอร์ (รองรับไฟล์ .xlsx หรือ .csv)</li>
                 <li>เมื่อเลือกไฟล์แล้ว ชื่อไฟล์จะปรากฏในช่อง</li>
-                <li>กดปุ่มสีฟ้า <span class="ui-element">ตรวจสอบ</span> เพื่อเริ่มประมวลผล</li>
+                <li>กดปุ่มสีฟ้า <span class="ui-element ui-btn-blue">ตรวจสอบ</span> เพื่อเริ่มประมวลผล</li>
             </ol>
-            <img src="5.png" alt="หน้าจอการเลือกไฟล์" class="screenshot">
+            <img src="1.png" alt="หน้าจอการเลือกไฟล์" class="screenshot">
         </div>
 
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">2</div>
-                <h3 class="step-title">การดูภาพรวมและสรุปผล (Dashboard)</h3>
+                <h3>การดูภาพรวมและสรุปผล (Dashboard)</h3>
             </div>
-            <p>เมื่อระบบประมวลผลเสร็จสิ้น ด้านบนของตารางจะแสดงสรุปจำนวนผู้ที่ชำระเงินแล้ว:</p>
+            <p>เมื่อกดตรวจสอบแล้ว ระบบจะแสดงสรุปจำนวนผู้ที่ชำระเงินแล้วที่ด้านบน:</p>
             <ul>
-                <li><strong>สสอ.รท (ชำระแล้ว):</strong> แสดงจำนวนคนที่เป็นสมาชิก สสอ.รท ที่ชำระเงินแล้ว (ตัวเลขสีเขียว)</li>
-                <li><strong>สส.ชสอ (ชำระแล้ว):</strong> แสดงจำนวนคนที่เป็นสมาชิก สส.ชสอ ที่ชำระเงินแล้ว (ตัวเลขสีเขียว)</li>
+                <li><strong>สสอ.รท (ชำระแล้ว):</strong> จำนวนสมาชิก สสอ.รท ที่ชำระเงินแล้ว (ตัวเลขสีเขียว)</li>
+                <li><strong>สส.ชสอ (ชำระแล้ว):</strong> จำนวนสมาชิก สส.ชสอ ที่ชำระเงินแล้ว (ตัวเลขสีเขียว)</li>
             </ul>
             <img src="4.png" alt="หน้าจอแสดงผลสรุปยอด" class="screenshot">
         </div>
@@ -285,68 +248,48 @@
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">3</div>
-                <h3 class="step-title">การกรองข้อมูล (Filter)</h3>
+                <h3>การกรองข้อมูล (Filter)</h3>
             </div>
-            <p>ท่านสามารถกดปุ่มตัวกรองด้านซ้ายบน เพื่อเลือกดูข้อมูลเฉพาะกลุ่มที่ต้องการได้:</p>
-            <ul>
-                <li><span class="ui-element" style="background-color: var(--primary-color); color: white;">ชำระเงินแล้ว</span> : ดูรายชื่อผู้ที่ชำระเงินครบแล้ว (สีเขียว)</li>
-                <li><span class="ui-element">รอชำระ</span> : ดูรายชื่อผู้ที่ยังไม่ได้ชำระ หรือค้างชำระ (สีแดง)</li>
-            </ul>
-             <img src="1.png" alt="หน้าจอแสดงรายการรอชำระ" class="screenshot">
+            <p>ใช้ปุ่มตัวกรองด้านซ้ายบนเพื่อดูข้อมูลเฉพาะกลุ่ม:</p>
+            
+            <div style="margin-bottom: 15px;">
+                <strong>1. ดูเฉพาะผู้ที่ชำระแล้ว:</strong><br>
+                คลิกปุ่ม <span class="ui-element ui-btn-blue">ชำระเงินแล้ว</span> (สีเขียว) ตารางจะแสดงเฉพาะรายการที่มียอดชำระครบถ้วน
+            </div>
+            <img src="5.png" alt="กรองข้อมูลชำระเงินแล้ว" class="screenshot">
+
+            <div style="margin-top: 30px; margin-bottom: 15px;">
+                <strong>2. ดูเฉพาะผู้ที่ยังไม่ชำระ:</strong><br>
+                คลิกปุ่ม <span class="ui-element">รอชำระ</span> (สีขาว) ตารางจะแสดงรายการที่ยังมียอดค้างชำระ
+            </div>
+            <img src="6.png" alt="กรองข้อมูลรอชำระ" class="screenshot">
         </div>
 
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">4</div>
-                <h3 class="step-title">ความหมายของข้อมูลในตาราง</h3>
+                <h3>เครื่องมือจัดการข้อมูล</h3>
             </div>
-            <p>ตารางจะแสดงรายละเอียดสมาชิกแต่ละคน โดยมีความหมายของสัญลักษณ์ดังนี้:</p>
-            <img src="3.png" alt="รายละเอียดในตาราง" class="screenshot">
-            <br>
+            <p>ระบบมีเครื่องมือเพิ่มเติมสำหรับการจัดการข้อมูลดังนี้:</p>
             <table>
-                <thead>
-                    <tr>
-                        <th width="20%">คอลัมน์</th>
-                        <th>คำอธิบาย</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>ยอดเรียกเก็บ</strong></td>
-                        <td>จำนวนเงินที่ต้องชำระตามกำหนด</td>
-                    </tr>
-                    <tr>
-                        <td><strong>ยอดที่ชำระ</strong></td>
-                        <td>จำนวนเงินที่สมาชิมาชำระจริง (ตัวเลขสีเขียวคือชำระแล้ว)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>สสอ.รท / สส.ชสอ</strong></td>
-                        <td>
-                            <span class="icon-check">✔</span> (สีเขียว) = ชำระส่วนนี้แล้ว<br>
-                            <span class="icon-cross">✖</span> (สีแดง) = ยังไม่ชำระ
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><strong>สถานะ</strong></td>
-                        <td>
-                            <span class="status-badge status-paid">ชำระเงินแล้ว</span> = ชำระครบถ้วน<br>
-                            <span class="status-badge status-pending">รอชำระ</span> = ยังค้างชำระ
-                        </td>
-                    </tr>
-                </tbody>
+                <tr>
+                    <td width="30%"><strong>ปุ่ม <span class="ui-element ui-btn-blue">Export CSV</span></strong></td>
+                    <td>สำหรับดาวน์โหลดตารางข้อมูลที่แสดงอยู่ ออกมาเป็นไฟล์ CSV เพื่อนำไปใช้งานต่อ</td>
+                </tr>
+                <tr>
+                    <td><strong>ปุ่ม <span class="ui-element ui-btn-yellow">ล้างข้อมูล</span></strong></td>
+                    <td>สำหรับเคลียร์ข้อมูลทั้งหมดบนหน้าจอ เพื่อเตรียมพร้อมสำหรับการอัปโหลดไฟล์ใหม่</td>
+                </tr>
+                <tr>
+                    <td><strong>ตัวกรองวันที่</strong></td>
+                    <td>สามารถระบุวันที่เพื่อดูรายการที่เกิดขึ้นในวันนั้นๆ ได้</td>
+                </tr>
             </table>
-        </div>
-
-        <div class="step-card">
-            <div class="step-header">
-                <div class="step-number">5</div>
-                <h3 class="step-title">การส่งออกข้อมูล (Export)</h3>
-            </div>
-            <p>หากต้องการนำข้อมูลไปใช้งานต่อ สามารถกดปุ่ม <span class="ui-element">Export CSV</span> ที่มุมขวาบน ระบบจะดาวน์โหลดไฟล์รายงานสรุปผลออกมาเป็นไฟล์ CSV ทันที</p>
+            <img src="3.png" alt="เครื่องมือจัดการข้อมูล" class="screenshot">
         </div>
 
         <div class="note">
-            <strong>ข้อควรระวัง:</strong> โปรดตรวจสอบรูปแบบไฟล์ข้อมูลต้นฉบับให้ถูกต้องก่อนการอัปโหลด เพื่อให้ระบบสามารถอ่านค่า รหัสสมาชิก และ ยอดเงิน ได้อย่างแม่นยำ
+            <strong>หมายเหตุ:</strong> ระบบจะตรวจสอบความถูกต้องของ รหัสสมาชิก และ ยอดเงิน เป็นหลัก กรุณาตรวจสอบไฟล์ต้นฉบับให้ถูกต้องก่อนการอัปโหลด
         </div>
 
         <footer>
@@ -360,30 +303,21 @@
     </div>
 
     <script>
-        // ดึงองค์ประกอบ Modal และรูปภาพที่จะแสดงใน Modal มาเก็บไว้
+        // Script สำหรับจัดการการคลิกรูปภาพเพื่อขยาย
         var modal = document.getElementById("imageModal");
         var modalImg = document.getElementById("expandedImg");
-
-        // ดึงรูปภาพทั้งหมดที่มี class="screenshot"
         var images = document.querySelectorAll('.screenshot');
+        var span = document.getElementsByClassName("close")[0];
 
-        // วนลูปเพื่อเพิ่มเหตุการณ์ onclick ให้กับรูปภาพทุกรูป
         images.forEach(img => {
             img.onclick = function(){
-                modal.style.display = "flex"; // แสดง Modal
-                modalImg.src = this.src; // เอารูปที่คลิกไปใส่ใน Modal
+                modal.style.display = "flex";
+                modalImg.src = this.src;
             }
         });
 
-        // ดึงปุ่มปิด (x)
-        var span = document.getElementsByClassName("close")[0];
-
-        // เมื่อคลิกปุ่มปิด ให้ซ่อน Modal
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        // เมื่อคลิกที่พื้นหลังสีดำนอกรูปภาพ ให้ซ่อน Modal เช่นกัน
+        span.onclick = function() { modal.style.display = "none"; }
+        
         modal.onclick = function(event) {
             if (event.target === modal) {
                  modal.style.display = "none";
